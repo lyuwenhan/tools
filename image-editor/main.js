@@ -18,7 +18,7 @@ let realWidth = 1,
 	realHeight = 1;
 const defaultSetting = {
 	remTrans: false,
-	useSmooth: false,
+	useSmooth: true,
 	remColor: "#ffffff"
 };
 let userSetting = {};
@@ -96,7 +96,7 @@ removeTrans.addEventListener("input", () => {
 	render()
 });
 noSmooth.addEventListener("input", () => {
-	userSetting.noSmooth = noSmooth.value;
+	userSetting.useSmooth = !noSmooth.checked;
 	window.localStorage.setItem("image-editor-setting", JSON.stringify(userSetting));
 	render()
 });
