@@ -37,10 +37,10 @@ canvas {
 	display: block;
 	max-width: 100%;
 	border: 1px solid #ccc;
-	background: #fff
+	background: #f7f7f7
 }
 canvas:hover {
-	background: #f0f0f0
+	background: #eee
 }
 button {
 	padding: 8px 16px;
