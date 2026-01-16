@@ -107,16 +107,13 @@ bgColorInput.addEventListener("input", () => {
 });
 document.addEventListener("dragover", e => {
 	e.preventDefault();
-	dragOverlay.hidden = false;
 	drop.classList.add("dragover")
 });
 dragOverlay.addEventListener("dragleave", () => {
-	dragOverlay.hidden = true;
 	drop.classList.remove("dragover")
 });
 document.addEventListener("drop", e => {
 	e.preventDefault();
-	dragOverlay.hidden = true;
 	drop.classList.remove("dragover");
 	const file = e.dataTransfer.files[0];
 	handleFile(file)

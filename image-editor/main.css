@@ -67,3 +67,6 @@ button:disabled {
 	height: 100%;
 	z-index: 99999
 }
+body:not(:has(.dragover)) > #dragOverlay {
+	display: none
+}
