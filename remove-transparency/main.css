@@ -1,0 +1,54 @@
+body {
+	font-family: system-ui, sans-serif;
+	background: #f5f5f5;
+	padding: 20px
+}
+#prev, body {
+	display: flex;
+	gap: 16px;
+	align-items: flex-start;
+	flex-direction: column
+}
+h2 {
+	margin-top: 0
+}
+#drop {
+	width: 360px;
+	height: 120px;
+	border: 2px dashed #999;
+	border-radius: 6px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #fff;
+	color: #666;
+	user-select: none;
+	margin-bottom: 16px
+}
+#drop.dragover {
+	background: #eef
+}
+.controls {
+	display: flex;
+	gap: 5px;
+	align-items: center
+}
+canvas {
+	display: block;
+	max-width: 100%;
+	border: 1px solid #ccc;
+	background: #fff
+}
+button {
+	padding: 8px 16px;
+	cursor: pointer
+}
+button:disabled {
+	opacity: .5;
+	cursor: not-allowed
+}
+[hidden] {
+	display: none !important;
+	pointer-events: none !important;
+	opacity: 0 !important
+}
