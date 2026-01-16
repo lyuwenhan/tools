@@ -2,20 +2,22 @@ const drop = document.getElementById("drop");
 const fileInput = document.getElementById("file");
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-const byHex = document.getElementById("byHex");
 const bgColorInput = document.getElementById("bgColor");
 const btnDownload = document.getElementById("download");
 const setW = document.getElementById("setW");
 const setH = document.getElementById("setH");
 const btnCopy = document.getElementById("copy");
+const removeTrans = document.getElementById("removeTrans");
 const noSmooth = document.getElementById("noSmooth");
+const dragOverlay = document.getElementById("dragOverlay");
 const prev = document.getElementById("prev");
 let currentImage = null;
 let imgWidth = 1,
 	imgHeight = 1;
 let realWidth = 1,
 	realHeight = 1;
-let useSmooth = true;
+let useSmooth = true,
+	remTrans = false;
 
 function loadImageFromFile(file) {
 	return new Promise((resolve, reject) => {
@@ -46,8 +48,10 @@ function render() {
 	canvas.width = imgWidth;
 	canvas.height = imgHeight;
 	ctx.imageSmoothingEnabled = useSmooth;
-	ctx.fillStyle = bgColorInput.value;
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
+	if (remTrans) {
+		ctx.fillStyle = bgColorInput.value;
+		ctx.fillRect(0, 0, canvas.width, canvas.height)
+	}
 	ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height)
 }
 setH.addEventListener("input", () => {
@@ -70,31 +74,29 @@ setW.addEventListener("input", () => {
 	setW.value = imgWidth;
 	render()
 });
+removeTrans.addEventListener("input", () => {
+	remTrans = removeTrans.checked;
+	render()
+});
 noSmooth.addEventListener("input", () => {
 	useSmooth = !noSmooth.checked;
 	render()
 });
 bgColorInput.addEventListener("input", () => {
-	byHex.value = bgColorInput.value;
-	render()
-});
-byHex.addEventListener("input", () => {
-	const val = byHex.value;
-	if (val.length != 7 || !/^#[0-9a-fA-F]{6}$/.test(val)) {
-		return
-	}
-	bgColorInput.value = val;
 	render()
 });
 document.addEventListener("dragover", e => {
 	e.preventDefault();
+	dragOverlay.hidden = false;
 	drop.classList.add("dragover")
 });
-document.addEventListener("dragleave", () => {
+dragOverlay.addEventListener("dragleave", () => {
+	dragOverlay.hidden = true;
 	drop.classList.remove("dragover")
 });
 document.addEventListener("drop", e => {
 	e.preventDefault();
+	dragOverlay.hidden = true;
 	drop.classList.remove("dragover");
 	const file = e.dataTransfer.files[0];
 	handleFile(file)
