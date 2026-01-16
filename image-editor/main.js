@@ -16,8 +16,24 @@ let imgWidth = 1,
 	imgHeight = 1;
 let realWidth = 1,
 	realHeight = 1;
-let useSmooth = true,
-	remTrans = false;
+const defaultSetting = {
+	remTrans: false,
+	useSmooth: false,
+	remColor: "#ffffff"
+};
+let userSetting = {};
+try {
+	userSetting = {
+		...defaultSetting,
+		...JSON.parse(window.localStorage.getItem("image-editor-setting"))
+	}
+} catch {
+	userSetting = defaultSetting
+}
+window.localStorage.setItem("image-editor-setting", JSON.stringify(userSetting));
+removeTrans.checked = userSetting.remTrans;
+noSmooth.checked = !userSetting.useSmooth;
+bgColorInput.value = userSetting.remColor;
 
 function loadImageFromFile(file) {
 	return new Promise((resolve, reject) => {
@@ -47,9 +63,9 @@ function render() {
 	if (!currentImage) return;
 	canvas.width = imgWidth;
 	canvas.height = imgHeight;
-	ctx.imageSmoothingEnabled = useSmooth;
-	if (remTrans) {
-		ctx.fillStyle = bgColorInput.value;
+	ctx.imageSmoothingEnabled = userSetting.useSmooth;
+	if (userSetting.remTrans) {
+		ctx.fillStyle = userSetting.remColor;
 		ctx.fillRect(0, 0, canvas.width, canvas.height)
 	}
 	ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height)
@@ -75,14 +91,18 @@ setW.addEventListener("input", () => {
 	render()
 });
 removeTrans.addEventListener("input", () => {
-	remTrans = removeTrans.checked;
+	userSetting.remTrans = removeTrans.checked;
+	window.localStorage.setItem("image-editor-setting", JSON.stringify(userSetting));
 	render()
 });
 noSmooth.addEventListener("input", () => {
-	useSmooth = !noSmooth.checked;
+	userSetting.noSmooth = noSmooth.value;
+	window.localStorage.setItem("image-editor-setting", JSON.stringify(userSetting));
 	render()
 });
 bgColorInput.addEventListener("input", () => {
+	userSetting.remColor = bgColorInput.value;
+	window.localStorage.setItem("image-editor-setting", JSON.stringify(userSetting));
 	render()
 });
 document.addEventListener("dragover", e => {
