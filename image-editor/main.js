@@ -53,7 +53,7 @@ async function handleFile(file) {
 		prev.hidden = false;
 		btnDownload.disabled = false;
 		btnCopy.disabled = false;
-		drop.textContent = "Loaded: " + file.name
+		drop.innerText = "Loaded: " + file.name + '\nDrag image, click, or paste to upload new one'
 	} catch {
 		alert("Failed to load image.")
 	}
@@ -125,6 +125,20 @@ fileInput.addEventListener("change", e => {
 	const file = e.target.files[0];
 	handleFile(file);
 	fileInput.value = ""
+});
+document.addEventListener("paste", e => {
+	const items = e.clipboardData?.items;
+	if (!items) return;
+	for (const item of items) {
+		if (item.type.startsWith("image/")) {
+			const file = item.getAsFile();
+			if (file) {
+				handleFile(file);
+				e.preventDefault();
+				break
+			}
+		}
+	}
 });
 btnDownload.addEventListener("click", () => {
 	const a = document.createElement("a");
